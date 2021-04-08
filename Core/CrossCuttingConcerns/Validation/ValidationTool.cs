@@ -11,8 +11,6 @@ namespace Core.CrossCuttingConcerns.Validation
         {
             var context = new ValidationContext<object>(entity);
             var result = validator.Validate(context);
-            // ProductValidator productValidator = new ProductValidator();
-            //var result = productValidator.Validate(context);
 
             if (!result.IsValid)
             {

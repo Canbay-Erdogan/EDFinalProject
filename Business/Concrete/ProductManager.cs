@@ -3,6 +3,9 @@ using Business.BusinessAspects.Autofac;
 using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Caching;
+using Core.Aspect.Autofac.Performance;
+using Core.Aspect.Autofac.Transaction;
 using Core.Aspect.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
@@ -28,8 +31,9 @@ namespace Business.Concrete
             _categoryService = categoryService;
         }
 
-        // [ValidationAspect(typeof(ProductValidator))]
+        [ValidationAspect(typeof(ProductValidator))]
         [SecuredOperation("product.add,admin")]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
             IResult result = BusinessRules.Run(CheckIfProductNameExist(product.ProductName),
@@ -42,7 +46,7 @@ namespace Business.Concrete
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }
-
+        [CacheAspect]
         public IDataResult<List<Product>> GetAll()
         {
             if (DateTime.UtcNow.Hour == 17)
@@ -57,6 +61,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
         }
 
+        [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<Product> GetById(int productId)
         {
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
@@ -77,7 +83,8 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ProductValidator))]
-        public IDataResult<Product> Update(Product product)
+        [CacheRemoveAspect("IProductService.Get")]
+        public IResult Update(Product product)
         {
             return new SuccessDataResult<Product>();
         }
@@ -110,6 +117,11 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.CategoryLimitExceded);
             }
             return new SuccessResult();
+        }
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Product product)
+        {
+           
         }
     }
 }

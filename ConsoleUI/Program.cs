@@ -22,7 +22,7 @@ namespace ConsoleUI
 
         private static void ProductTest()
         {
-            ProductManager prodcutManager = new ProductManager(new EfProductDal(),new CategoryManager(new EfCategoryDal));
+            ProductManager prodcutManager = new ProductManager(new EfProductDal(),new CategoryManager(new EfCategoryDal()));
             Console.WriteLine("Ürünler Listeleniyor!");
             var result = prodcutManager.GetProductDetails();
             if (result.Success)
