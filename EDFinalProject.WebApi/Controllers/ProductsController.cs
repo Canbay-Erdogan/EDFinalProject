@@ -58,5 +58,19 @@ namespace EDFinalProject.WebApi.Controllers
                 return BadRequest(result);
             }
         }
+
+        [HttpGet("getproductswithcategoryid")]
+        public IActionResult getproductswithcategoryid(int id)
+        {
+            var result = _productService.GetAllByCategoryId(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
     }
 }

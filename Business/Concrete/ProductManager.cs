@@ -1,23 +1,19 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
-using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspect.Autofac.Caching;
 using Core.Aspect.Autofac.Performance;
-using Core.Aspect.Autofac.Transaction;
 using Core.Aspect.Autofac.Validation;
-using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
-using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 
 namespace Business.Concrete
 {
@@ -32,7 +28,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ProductValidator))]
-        [SecuredOperation("product.add,admin")]
+       // [SecuredOperation("product.add,admin")]
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
@@ -49,10 +45,7 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<List<Product>> GetAll()
         {
-            if (DateTime.UtcNow.Hour == 17)
-            {
-                return new ErrorDataResult<List<Product>>(Messages.MaintanceTime);
-            }
+            //Thread.Sleep(5000);
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductListed);
         }
 
@@ -118,10 +111,15 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
-        [TransactionScopeAspect]
+
         public IResult AddTransactionalTest(Product product)
         {
-           
+            throw new NotImplementedException();
         }
+        //[TransactionScopeAspect]
+        //public IResult AddTransactionalTest(Product product)
+        //{
+
+        //}
     }
 }

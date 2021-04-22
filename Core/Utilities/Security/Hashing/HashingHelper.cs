@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 
 namespace Core.Utilities.Security.Hashing
 {
@@ -13,6 +11,7 @@ namespace Core.Utilities.Security.Hashing
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
+            VerifyPasswordHash(password, passwordHash, passwordSalt);
         }
 
         public static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)

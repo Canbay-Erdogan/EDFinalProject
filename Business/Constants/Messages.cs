@@ -16,11 +16,11 @@ namespace Business.Constants
         public static string ProductNameAlreadyExist = "bu ürün var";
         public static string CategoryLimitExceded = "kategori limt aşıldı";
         public static string AuthorizationDenied= "Yetkin Yok ";
-        internal static string UserRegistered;
-        internal static User UserNotFound;
-        internal static User PasswordError;
-        internal static string SuccessfulLogin;
-        internal static string UserAlreadyExists;
-        internal static string AccessTokenCreated;
+        public static string UserRegistered="kullanıcı kayıt oldu";
+        public static string UserNotFound="kullanıcı hatalı";
+        public static string PasswordError="şifre yanlış";
+        public static string SuccessfulLogin="giriş tamamdır";
+        public static string UserAlreadyExists="bu kullanıcı var gibi";
+        public static string AccessTokenCreated="token oluşturuldu";
     }
 }
